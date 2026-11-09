@@ -8,9 +8,10 @@ from datetime import date, timedelta
 from pathlib import Path
 
 LOGIN = os.environ.get("PROFILE_LOGIN", "orzanai")
-NAME = "Orzan"
-TAGLINE = "I break AI so you don't have to"
-SUBLINE = "AI agents · vibe coding · Claude Code"
+NAME = "Abdullah Orzan"
+TAGLINE = "AI Researcher & Engineer"
+SUBLINE = "MSc in NLP · University of Trier"
+FOCUS = ["Natural Language Processing", "LLMs", "Research"]
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "dist"
 
@@ -107,26 +108,34 @@ ICONS = {
 }
 
 
-def portrait(x0, y0, size):
-    rows = (ROOT / "scripts" / "portrait.txt").read_text().split()
-    n = len(rows)
-    p = size / n
-    dim, mid, hot = [], [], []
-    for y, row in enumerate(rows):
-        for x, ch in enumerate(row):
-            if ch == "0":
+def attention(x0, y0):
+    """A causal self-attention map: an NLP-flavoured visual for the card."""
+    toks = ["<s>", "attention", "is", "all", "you", "need"]
+    n, cell, lab = len(toks), 22, 74
+    s = [f'<text x="{x0}" y="{y0}" font-family="{MONO}" font-size="11.5" fill="{DIM}">attention.weights</text>',
+         f'<text x="{x0+lab+n*cell}" y="{y0}" text-anchor="end" font-family="{MONO}" font-size="11.5" fill="{MINT2}">head 3</text>']
+    gx, gy = x0 + lab, y0 + 18
+    for i, t in enumerate(toks):
+        s.append(f'<text x="{gx-10}" y="{gy+i*cell+15}" text-anchor="end" font-family="{MONO}" font-size="11" fill="{TEXT}">{esc(t)}</text>')
+        scores = [(-0.9 * (i - j)) + (1.6 if j == 0 else 0) + (1.1 if j == i else 0) + (0.8 if (i, j) in {(4, 1), (5, 1), (3, 1)} else 0)
+                  for j in range(i + 1)]
+        ex = [math.exp(v) for v in scores]
+        z = sum(ex)
+        for j in range(n):
+            x, y = gx + j * cell, gy + i * cell
+            if j > i:
+                s.append(f'<circle cx="{x+cell/2}" cy="{y+cell/2}" r="1.3" fill="{DIM}" opacity=".45"/>')
                 continue
-            cx, cy = x0 + x * p + p / 2, y0 + y * p + p / 2
-            {"1": dim, "2": mid, "3": hot}[ch].append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{p*0.36:.2f}"/>')
-    return (f'<g fill="#3fbf9c" opacity=".38">{"".join(dim)}</g>'
-            f'<g fill="{MINT2}" opacity=".8">{"".join(mid)}</g>'
-            f'<g fill="{MINT}" filter="url(#glow)">{"".join(hot)}</g>')
+            w = ex[j] / z
+            glow = ' filter="url(#glow)"' if w > 0.45 else ""
+            s.append(f'<rect x="{x+2}" y="{y+2}" width="{cell-4}" height="{cell-4}" rx="4" fill="{MINT}" opacity="{0.12+0.88*w**0.75:.2f}"{glow}/>')
+    s.append(f'<text x="{x0}" y="{gy+n*cell+24}" font-family="{MONO}" font-size="10.5" fill="{DIM}">softmax(QKᵀ/√d) · causal mask</text>')
+    return "".join(s)
 
 
 def card(d):
     h = 344
-    top = sorted(d["langs"].items(), key=lambda kv: -kv[1][0])[:4]
-    chips_src = [(n, c) for n, (s, c) in top] or [("Claude Code", MINT), ("AI Agents", MINT2)]
+    chips_src = [(f, c) for f, c in zip(FOCUS, [MINT, "#7aa2ff", "#f2b84b"])]
     stats = [("repo", d["repos"], "Repositories"), ("star", d["stars"], "Stars"),
              ("pulse", d["total"], "Contributions"), ("people", d["followers"], "Followers")]
     s = []
@@ -138,8 +147,8 @@ def card(d):
     s.append(f'<rect x="20" y="64" width="{W-40}" height="{h-84}" rx="14" fill="{PANEL}" stroke="{LINE}"/>')
     tx = 46
     s.append(f'<text x="{tx}" y="100" font-family="{MONO}" font-size="14" fill="{MINT}">@{esc(d["login"])}</text>')
-    s.append(f'<text x="{tx}" y="146" font-family="{SANS}" font-weight="800" font-size="44" fill="{MINT}" filter="url(#glow)" letter-spacing="-.5">{esc(NAME)}</text>')
-    s.append(f'<text x="{tx}" y="174" font-family="{SANS}" font-size="15" fill="{TEXT}">{esc(TAGLINE)}</text>')
+    s.append(f'<text x="{tx}" y="146" font-family="{SANS}" font-weight="800" font-size="40" fill="{MINT}" filter="url(#glow)" letter-spacing="-.5">{esc(NAME)}</text>')
+    s.append(f'<text x="{tx}" y="174" font-family="{SANS}" font-weight="600" font-size="17" fill="{TEXT}">{esc(TAGLINE)}</text>')
     s.append(f'<text x="{tx}" y="196" font-family="{MONO}" font-size="12.5" fill="{DIM}">{esc(SUBLINE)}</text>')
     for i, (ic, val, label) in enumerate(stats):
         cx, cy = tx + (i % 2) * 222, 232 + (i // 2) * 30
@@ -153,11 +162,10 @@ def card(d):
                  f'<circle cx="{x+13}" cy="297" r="4" fill="{color}"/>'
                  f'<text x="{x+22}" y="301.5" font-family="{MONO}" font-size="12" fill="{TEXT}">{esc(name)}</text>')
         x += w + 8
-    # portrait
-    px, ps = W - 20 - 30 - 206, 206
-    s.append(f'<rect x="{px-14}" y="80" width="{ps+28}" height="{ps+28}" rx="12" fill="#06111a" stroke="{LINE}"/>')
-    s.append(f'<circle cx="{px+ps/2}" cy="{94+ps/2}" r="{ps*0.42}" fill="{MINT}" opacity=".07" filter="url(#soft)"/>')
-    s.append(portrait(px, 94, ps))
+    # attention panel
+    ax = W - 20 - 26 - 236
+    s.append(f'<rect x="{ax-14}" y="80" width="264" height="234" rx="12" fill="#06111a" stroke="{LINE}"/>')
+    s.append(attention(ax, 106))
     write("card.svg", frame(h, "".join(s)))
 
 
