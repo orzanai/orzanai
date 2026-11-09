@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="dist/card.svg" width="100%" alt="Orzan: I break AI so you don't have to. AI agents, vibe coding, Claude Code." />
+<img src="dist/card.svg" width="100%" alt="Abdullah Orzan, AI Researcher & Engineer. MSc in NLP, University of Trier." />
 
 <img src="dist/city.svg" width="100%" alt="My contributions this year as a 3D city" />
 
@@ -8,16 +8,16 @@
 
 </div>
 
-### 👋 Hey, I'm Orzan
+### About me
 
-I make short videos about **AI agents, vibe coding and Claude Code**, and I break AI-built apps so you don't have to.
+AI Researcher & Engineer, currently doing my **MSc in Natural Language Processing** at the University of Trier.
+I work on **large language models** and NLP, from research questions to working systems.
 
-🔐 **[The AI Vault](https://orzanai.github.io/ai-vault/)**: every prompt from my videos, free. Type the keyword, copy, ship.
+**Research interests**
+- Natural Language Processing
+- Large Language Models
+- Research on how language models are built, evaluated and applied
 
-📸 **[@orzan.ai on Instagram](https://instagram.com/orzan.ai)**: new reels most days.
+**Connect:** [LinkedIn](https://www.linkedin.com/in/abdullah-orzan)
 
-| # | Keyword | Drop |
-|---|---------|------|
-| 01 | `AUDIT` | [7 security holes in vibe-coded apps](https://orzanai.github.io/ai-vault/#audit) |
-
-<sub>Cards rebuild daily from my GitHub data with a small GitHub Action. No third-party services.</sub>
+<sub>The cards above rebuild daily from my GitHub activity with a small GitHub Action.</sub>
