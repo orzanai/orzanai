@@ -142,7 +142,7 @@ def card(d):
     s.append(f'<text x="{tx}" y="174" font-family="{SANS}" font-size="15" fill="{TEXT}">{esc(TAGLINE)}</text>')
     s.append(f'<text x="{tx}" y="196" font-family="{MONO}" font-size="12.5" fill="{DIM}">{esc(SUBLINE)}</text>')
     for i, (ic, val, label) in enumerate(stats):
-        cx, cy = tx + (i % 2) * 190, 232 + (i // 2) * 30
+        cx, cy = tx + (i % 2) * 222, 232 + (i // 2) * 30
         s.append(f'<g transform="translate({cx},{cy-12}) scale(.95)" fill="{MINT2}">{ICONS[ic]}</g>')
         s.append(f'<text x="{cx+24}" y="{cy}" font-family="{MONO}" font-size="14"><tspan fill="{TEXT}" font-weight="700">{val:,}</tspan>'
                  f'<tspan fill="{DIM}" dx="8">{label}</tspan></text>')
