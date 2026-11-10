@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="dist/card.svg" width="100%" alt="Abdullah Orzan, AI Researcher & Engineer. MSc in NLP, University of Trier." />
+<img src="dist/card.svg" width="100%" alt="Orzan, AI Researcher & Engineer. MSc in NLP, University of Trier." />
 
 <img src="dist/city.svg" width="100%" alt="My contributions this year as a 3D city" />
 
